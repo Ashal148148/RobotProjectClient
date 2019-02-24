@@ -88,8 +88,7 @@ public class MainActivity extends AppCompatActivity {
             intention = SIGN_UP;
         }
     }
-    //note to self https://stackoverflow.com/questions/16780294/how-to-print-to-the-console-in-android-studio
-    //how to write to the log and search for it
+
     public void onClickConfirm(View v) {
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
@@ -175,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 sp.edit().putString("Email", email).apply();
                 if (!sp.edit().putString("Password", "").commit())//if commit failed
                 {
-                    Log.d("Shared Preference", "Failed to commit changes");
+                    Log.d("Shared Preference", "Failed to commit changes");//TODO sercret
                 }
                 goToMenu();
             }
