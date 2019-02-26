@@ -5,12 +5,19 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity {
@@ -20,6 +27,7 @@ public class MenuActivity extends AppCompatActivity {
     ArrayList<String> arrayList;
     ClientListAdapter myAdapter;
     TcpClient myTcpClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,23 +56,56 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void onClickConnect(View v) {
-        myTcpClient.sendMessage("Hello!");
+        String[] args = new String[2];
+        args[0] = "192.168.5.59";
+        args[1] = "1267";
+        new ConnectTask().execute((args));
     }
+
     public class ConnectTask extends AsyncTask<String, String, TcpClient> {
-
+        private String myServerIp;
+        private String myServerPort;
+        private String myServerMessage;
+        private String myMessage;
+        private TcpClient.OnMessageReceived myMessageListener = null;
+        private boolean myRun = false;
+        private PrintWriter myBuffOut;
+        private BufferedReader myBuffIn;
         @Override
-        protected TcpClient doInBackground(String... message) {
+        protected TcpClient doInBackground(String... args) {
+            try {
+                Log.d("TCP", "Connecting to " + args[0]);
+                Socket sock = new Socket(args[0], Integer.parseInt(args[1]));
+                try {
+                    myBuffOut = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())), true);
+                    myBuffIn = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 
-            //we create a TCPClient object and
-            myTcpClient = new TcpClient(new TcpClient.OnMessageReceived(){
-                @Override
-                //here the messageReceived method is implemented
-                public void messageReceived(String message) {
-                    //this method calls the onProgressUpdate
-                    publishProgress(message);
+                    if (myBuffOut != null && !myBuffOut.checkError()) {
+                        myBuffOut.println("Hello!");
+                        myBuffOut.flush();
+                    }
+                    Log.d("TCP", "1 msg sent: " + "Hello!");
+                    char[] buff = new char[128];
+                    int i=0;
+                    while(i>-1 && i<4) {
+                        buff[i] = (char)myBuffIn.read();
+                        i++;
+                    }
+                    myServerMessage =new String(buff);
+                    Log.d("TCP", "2 i=" + i);
+
+                    Log.d("TCP", "S: Received Message: '" + myServerMessage + "'");
+                } catch (Exception e) {
+                    Log.e("TCP", "Error:", e);
                 }
-            },"127.0.0.1","1267");
-            myTcpClient.run();
+                if (myBuffOut != null && !myBuffOut.checkError()) {
+                    myBuffOut.println("201");
+                    myBuffOut.flush();
+                }
+                sock.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             return null;
         }
