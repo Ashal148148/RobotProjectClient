@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
     //Credit to http://www.myandroidsolutions.com/2013/03/31/android-tcp-connection-enhanced/#.W_0NQmhvbcd
     private ListView List;
     private ArrayList<String> arrayList;
-    private ClientListAdapter Adapter;
-    private TcpClient TcpClient;
 
     //GUI elements
     private Button btnSignIn, btnSignUp, btnConfirm;

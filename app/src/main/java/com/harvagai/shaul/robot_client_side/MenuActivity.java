@@ -25,8 +25,6 @@ public class MenuActivity extends AppCompatActivity {
     TextView tvEmail;
     SharedPreferences sp;
     ArrayList<String> arrayList;
-    ClientListAdapter myAdapter;
-    TcpClient myTcpClient;
 
 
     @Override
@@ -62,17 +60,16 @@ public class MenuActivity extends AppCompatActivity {
         new ConnectTask().execute((args));
     }
 
-    public class ConnectTask extends AsyncTask<String, String, TcpClient> {
+    public class ConnectTask extends AsyncTask<String, String, Server> {
         private String myServerIp;
         private String myServerPort;
         private String myServerMessage;
         private String myMessage;
-        private TcpClient.OnMessageReceived myMessageListener = null;
         private boolean myRun = false;
         private PrintWriter myBuffOut;
         private BufferedReader myBuffIn;
         @Override
-        protected TcpClient doInBackground(String... args) {
+        protected Server doInBackground(String... args) {
             try {
                 Log.d("TCP", "Connecting to " + args[0]);
                 Socket sock = new Socket(args[0], Integer.parseInt(args[1]));
@@ -118,8 +115,7 @@ public class MenuActivity extends AppCompatActivity {
             arrayList.add(values[0]);
             // notify the adapter that the data set has changed. This means that new message received
             // from server was added to the list
-            myAdapter.notifyDataSetChanged();
-        }
+            }
     }
 
     @Override

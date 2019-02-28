@@ -30,6 +30,6 @@ public class Server {
 
     public String[] GetMessageParts()
     {
-
+        return null;
     }
 }
