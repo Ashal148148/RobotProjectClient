@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class MenuActivity extends AppCompatActivity {
     ListView lv;
     TextView tvEmail;
-    SharedPreferences sp;
+    SharedPreferences spRememberMe;
     ArrayList<String> arrayList;
 
 
@@ -38,8 +38,8 @@ public class MenuActivity extends AppCompatActivity {
         //handle graphics
         String email;
         tvEmail = (TextView)(findViewById(R.id.tvEmail));
-        sp = getSharedPreferences("remember_me",MODE_PRIVATE);
-        email = sp.getString("Email","Def value");
+        spRememberMe = getSharedPreferences("remember_me",MODE_PRIVATE);
+        email = spRememberMe.getString("Email","Def value");
         tvEmail.setText(email);
         //TODO- Design EVERYTHING
         lv = (ListView)findViewById(R.id.lv);
@@ -55,8 +55,8 @@ public class MenuActivity extends AppCompatActivity {
 
     public void onClickConnect(View v) {
         String[] args = new String[2];
-        args[0] = "192.168.5.59";
-        args[1] = "1267";
+        args[0] = "192.168.4.111";//ip
+        args[1] = "1267";//port
         new ConnectTask().execute((args));
     }
 
@@ -120,7 +120,7 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        sp.edit().putString("Password","").apply();
+        spRememberMe.edit().putString("Password","").apply();
         super.onDestroy();
     }
 }

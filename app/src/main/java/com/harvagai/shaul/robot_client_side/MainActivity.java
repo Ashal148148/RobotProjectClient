@@ -36,10 +36,12 @@ public class MainActivity extends AppCompatActivity {
     private EditText etEmail, etPassword, etConfirmPassword;
     private TextView tvConfirmPassword;
     private CheckBox cbRememberMe;
-    boolean intention = SIGN_IN;
 
     //Shared preference
-    SharedPreferences sp;
+    SharedPreferences spRememberMe;
+
+    //variables
+    boolean intention = SIGN_IN;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,13 +56,13 @@ public class MainActivity extends AppCompatActivity {
         tvConfirmPassword = findViewById(R.id.tvConfirmPassword);
         cbRememberMe = findViewById(R.id.cbRememberMe);
 
-        sp = getSharedPreferences("remember_me",MODE_PRIVATE);
+        spRememberMe = getSharedPreferences("remember_me",MODE_PRIVATE);
 
         String email,password;
-        if(sp.contains("Password"))
+        if(spRememberMe.contains("Password"))
         {
-            email = sp.getString("Email","");
-            password = sp.getString("Password","");
+            email = spRememberMe.getString("Email","");
+            password = spRememberMe.getString("Password","");
             etEmail.setText(email);
             signIn(email,password,false);
         }
@@ -125,16 +127,16 @@ public class MainActivity extends AppCompatActivity {
             Log.d("ToServer", msgStr);
             //TODO- Handle response from server
             if (cbRememberMe.isChecked()) {
-                sp.edit().putString("Email", email).apply();
-                if (!sp.edit().putString("Password", password).commit())//if commit failed
+                spRememberMe.edit().putString("Email", email).apply();
+                if (!spRememberMe.edit().putString("Password", password).commit())//if commit failed
                 {
                     if(alertUser) {
                         Toast.makeText(this, "Failed to remember you", Toast.LENGTH_SHORT).show();
                     }
                 }
             } else {
-                sp.edit().putString("Email", email).apply();
-                if (!sp.edit().putString("Password", "").commit())//if commit failed
+                spRememberMe.edit().putString("Email", email).apply();
+                if (!spRememberMe.edit().putString("Password", "").commit())//if commit failed
                 {
                     Log.d("Shared Preference", "Failed to commit changes");
                 }
@@ -162,15 +164,15 @@ public class MainActivity extends AppCompatActivity {
             Log.d("ToServer", msgStr);
             //TODO- Handle response from server
             if (cbRememberMe.isChecked()) {
-                sp.edit().putString("Email", email).apply();
-                if (!sp.edit().putString("Password", password).commit())//if commit failed
+                spRememberMe.edit().putString("Email", email).apply();
+                if (!spRememberMe.edit().putString("Password", password).commit())//if commit failed
                 {
                     Toast.makeText(this, "Failed to remember you", Toast.LENGTH_SHORT).show();
                 }
                 goToMenu();
             } else {
-                sp.edit().putString("Email", email).apply();
-                if (!sp.edit().putString("Password", "").commit())//if commit failed
+                spRememberMe.edit().putString("Email", email).apply();
+                if (!spRememberMe.edit().putString("Password", "").commit())//if commit failed
                 {
                     Log.d("Shared Preference", "Failed to commit changes");//TODO sercret
                 }
