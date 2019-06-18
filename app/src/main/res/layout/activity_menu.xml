@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MenuActivity">
 
-    <ListView
-        android:id="@+id/lv"
-        android:layout_width="368dp"
-        android:layout_height="425dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Button
         android:id="@+id/btnLogOut"
         android:layout_width="63dp"
@@ -27,8 +18,8 @@
 
     <TextView
         android:id="@+id/tvEmail"
-        android:layout_width="149dp"
-        android:layout_height="58dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="example@sulam.co.il"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,5 +35,72 @@
         android:text="Connect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnWatering"
+        android:layout_width="140dp"
+        android:layout_height="104dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="104dp"
+        android:onClick="onClickWatering"
+        android:text="Watering"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnCamera"
+        android:layout_width="140dp"
+        android:layout_height="104dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="32dp"
+        android:onClick="onClickCamera"
+        android:text="Camera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPollination" />
+
+    <Button
+        android:id="@+id/btnManageUsers"
+        android:layout_width="140dp"
+        android:layout_height="104dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="32dp"
+        android:onClick="onClickManageUsers"
+        android:text="Manage Users"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCamera" />
+
+    <Button
+        android:id="@+id/btnSchedule"
+        android:layout_width="140dp"
+        android:layout_height="104dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:onClick="onClickSchedule"
+        android:text="Schedule"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSensors" />
+
+    <Button
+        android:id="@+id/btnPollination"
+        android:layout_width="140dp"
+        android:layout_height="101dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="104dp"
+        android:onClick="onClickPollination"
+        android:text="Pollination"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnSensors"
+        android:layout_width="140dp"
+        android:layout_height="104dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:onClick="onClickSensors"
+        android:text="Sensors"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnWatering" />
 
 </android.support.constraint.ConstraintLayout>

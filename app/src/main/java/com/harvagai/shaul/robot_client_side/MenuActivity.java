@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,10 +22,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity {
-    ListView lv;
     TextView tvEmail;
     SharedPreferences spRememberMe;
     ArrayList<String> arrayList;
+    Button btnManageUsers;
+    int authority;
 
 
     @Override
@@ -34,6 +36,7 @@ public class MenuActivity extends AppCompatActivity {
 
         //handle connection
         arrayList = new ArrayList<String>();
+        authority = getIntent().getIntExtra("authority",-1);//-1 for error
 
         //handle graphics
         String email;
@@ -41,11 +44,13 @@ public class MenuActivity extends AppCompatActivity {
         spRememberMe = getSharedPreferences("remember_me",MODE_PRIVATE);
         email = spRememberMe.getString("Email","Def value");
         tvEmail.setText(email);
+        if (authority > 2)//MISC NUMBER
+        {
+            btnManageUsers = (Button)findViewById(R.id.btnManageUsers);
+            btnManageUsers.setVisibility(View.VISIBLE);
+        }
         //TODO- Design EVERYTHING
-        lv = (ListView)findViewById(R.id.lv);
-        String[] arr = {"a","b","c","d","e","f","g","h","i","j","k"};
-        ArrayAdapter<String> bob = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arr);
-        lv.setAdapter(bob);
+
     }
 
     public void onClickLogOut(View v)
@@ -55,67 +60,52 @@ public class MenuActivity extends AppCompatActivity {
 
     public void onClickConnect(View v) {
         String[] args = new String[2];
-        args[0] = "192.168.4.111";//ip
+        args[0] = "192.168.5.109";//ip
         args[1] = "1267";//port
-        new ConnectTask().execute((args));
+        Connection cn = new Connection();
+        cn.execute(args);
     }
 
-    public class ConnectTask extends AsyncTask<String, String, Server> {
-        private String myServerIp;
-        private String myServerPort;
-        private String myServerMessage;
-        private String myMessage;
-        private boolean myRun = false;
-        private PrintWriter myBuffOut;
-        private BufferedReader myBuffIn;
-        @Override
-        protected Server doInBackground(String... args) {
-            try {
-                Log.d("TCP", "Connecting to " + args[0]);
-                Socket sock = new Socket(args[0], Integer.parseInt(args[1]));
-                try {
-                    myBuffOut = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())), true);
-                    myBuffIn = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+    public void onClickCamera(View v)
+    {
+        Intent i = new Intent(this,CameraActivity.class);
+        i.putExtra("authority",authority);
+        startActivity(i);
+    }
 
-                    if (myBuffOut != null && !myBuffOut.checkError()) {
-                        myBuffOut.println("Hello!");
-                        myBuffOut.flush();
-                    }
-                    Log.d("TCP", "1 msg sent: " + "Hello!");
-                    char[] buff = new char[128];
-                    int i=0;
-                    while(i>-1 && i<4) {
-                        buff[i] = (char)myBuffIn.read();
-                        i++;
-                    }
-                    myServerMessage =new String(buff);
-                    Log.d("TCP", "2 i=" + i);
+    public void onClickManageUsers(View v)
+    {
+        Intent i = new Intent(this,ManageUsersActivity.class);
+        i.putExtra("authority",authority);
+        startActivity(i);
+    }
 
-                    Log.d("TCP", "S: Received Message: '" + myServerMessage + "'");
-                } catch (Exception e) {
-                    Log.e("TCP", "Error:", e);
-                }
-                if (myBuffOut != null && !myBuffOut.checkError()) {
-                    myBuffOut.println("201");
-                    myBuffOut.flush();
-                }
-                sock.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public void onClickPollination(View v)
+    {
+        Intent i = new Intent(this,PollinationActivity.class);
+        i.putExtra("authority",authority);
+        startActivity(i);
+    }
 
-            return null;
-        }
+    public void onClickSchedule(View v)
+    {
+        Intent i = new Intent(this,ScheduleActivity.class);
+        i.putExtra("authority",authority);
+        startActivity(i);
+    }
 
-        @Override//not sure if necessary
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
+    public void onClickSensors(View v)
+    {
+        Intent i = new Intent(this,SensorsActivity.class);
+        i.putExtra("authority",authority);
+        startActivity(i);
+    }
 
-            //in the arrayList we add the messaged received from server
-            arrayList.add(values[0]);
-            // notify the adapter that the data set has changed. This means that new message received
-            // from server was added to the list
-            }
+    public void onClickWatering(View v)
+    {
+        Intent i = new Intent(this,WateringActivity.class);
+        i.putExtra("authority",authority);
+        startActivity(i);
     }
 
     @Override

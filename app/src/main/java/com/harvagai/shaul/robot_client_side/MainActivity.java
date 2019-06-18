@@ -101,9 +101,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    protected void goToMenu()
+    protected void goToMenu(int authority)
     {
         Intent i = new Intent(this,MenuActivity.class);
+        i.putExtra("authority",authority);
         startActivity(i);
     }
 
@@ -141,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Shared Preference", "Failed to commit changes");
                 }
             }
-            goToMenu();
+            goToMenu(4);//MISC NUMBER
         }
     }
 
@@ -169,14 +170,14 @@ public class MainActivity extends AppCompatActivity {
                 {
                     Toast.makeText(this, "Failed to remember you", Toast.LENGTH_SHORT).show();
                 }
-                goToMenu();
+                goToMenu(1);//MISC NUMBER
             } else {
                 spRememberMe.edit().putString("Email", email).apply();
                 if (!spRememberMe.edit().putString("Password", "").commit())//if commit failed
                 {
-                    Log.d("Shared Preference", "Failed to commit changes");//TODO sercret
+                    Log.d("Shared Preference", "Failed to commit changes");//TODO secret
                 }
-                goToMenu();
+                goToMenu(1);//MISC NUMBER
             }
         }
     }
