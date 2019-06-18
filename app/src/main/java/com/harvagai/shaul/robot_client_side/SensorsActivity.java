@@ -21,7 +21,7 @@ public class SensorsActivity extends AppCompatActivity {
     SharedPreferences spRememberMe;
     ArrayList<String> arrayList;
     Button btnPickSensor;
-    int sensorPicked;
+    int sensorPicked, authority;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,7 @@ public class SensorsActivity extends AppCompatActivity {
 
         //handle system
         sensorPicked = NO_SENSOR;
+        authority = getIntent().getIntExtra("authority",-1);//-1 for error
 
         //handle graphics
         String email;
