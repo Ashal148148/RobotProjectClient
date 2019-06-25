@@ -60,7 +60,7 @@ public class MenuActivity extends AppCompatActivity {
 
     public void onClickConnect(View v) {
         String[] args = new String[2];
-        args[0] = "192.168.5.109";//ip
+        args[0] = "192.168.5.112";//ip
         args[1] = "1267";//port
         Connection cn = new Connection();
         cn.execute(args);

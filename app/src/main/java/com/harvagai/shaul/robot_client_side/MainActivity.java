@@ -124,9 +124,15 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
 
-            String msgStr = "11#" + etEmail.getText().toString() + "#" + etPassword.getText().toString();
+            String msgStr = "200###" + etEmail.getText().toString() + "###" + etPassword.getText().toString();
             Log.d("ToServer", msgStr);
             //TODO- Handle response from server
+            Connection conn = new Connection();
+            String[] args = new String[4];
+            args[Connection.IP] = "192.168.5.112";
+            args[Connection.PORT] = "1267";
+            args[Connection.CODE] = "200";
+            args[Connection.MESSAGE] = msgStr;
             if (cbRememberMe.isChecked()) {
                 spRememberMe.edit().putString("Email", email).apply();
                 if (!spRememberMe.edit().putString("Password", password).commit())//if commit failed
@@ -161,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (!TextUtils.equals(password, confirmPassword)) {
             Toast.makeText(this, "Passwords don't match", Toast.LENGTH_SHORT).show();
         } else {
-            String msgStr = "12#" + email + "#" + password + "#" + confirmPassword;
+            String msgStr = "203###" + email + "###" + password;
             Log.d("ToServer", msgStr);
             //TODO- Handle response from server
             if (cbRememberMe.isChecked()) {

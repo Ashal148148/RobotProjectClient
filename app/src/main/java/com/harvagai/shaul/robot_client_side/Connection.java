@@ -13,6 +13,10 @@ import java.net.Socket;
 
 public class Connection {
     final private int BUFFER_SIZE = 128;
+    static final public int IP = 0;
+    static final public int PORT = 1;
+    static final public int CODE = 2;
+    static final public int MESSAGE = 3;
     private PrintWriter buffOut;
     private BufferedReader buffIn;
 
@@ -69,22 +73,28 @@ public class Connection {
                     myBuffOut = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())), true);
                     myBuffIn = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 
-                    if (myBuffOut != null && !myBuffOut.checkError()) {
-                        myBuffOut.println("Hello!");
-                        myBuffOut.flush();
-                    }
-                    Log.d("TCP", "1 msg sent: " + "Hello!");
-                    char[] buff = new char[128];
-                    int i=0;
-                    while(i>-1 && i<4) {
-                        buff[i] = (char)myBuffIn.read();
-                        i++;
+                    switch (args[CODE])
+                    {
+                        case "200":
+                            if (SignIn(args[MESSAGE]) == "")
+                            {
+                                //sign in success
+                            }
+                            else
+                            {
+                                //sign in failed
+                            }
+
+                            break;
+                        case "203":
+                            break;
+                        case "202":
+                            break;
+                            default:
+                                break;
                     }
 
-                    myServerMessage =new String(buff,0,i);
-                    Log.d("TCP", "2 i=" + i);
 
-                    Log.d("TCP", "S: Received Message: '" + myServerMessage + "'");
                 } catch (Exception e) {
                     Log.e("TCP", "Error:", e);
                 }
@@ -111,11 +121,33 @@ public class Connection {
             // from server was added to the list
         }
 
-        public boolean SignIn(String email, String password)
-        {
+        public String SignIn(String msgToServer) {
+            if (myBuffOut != null && !myBuffOut.checkError()) {
+                myBuffOut.println(msgToServer);
+                myBuffOut.flush();
+            }
+            Log.d("TCP", "1 msg sent: " + msgToServer);
+            char[] buff = new char[128];
+            int i = 0;
+            try {
+                while (i > -1 && i < 4) {
 
+                    buff[i] = (char) myBuffIn.read();
 
-            return false;
+                }
+                i++;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            myServerMessage = new String(buff, 0, i);
+
+            Log.d("TCP", "S: Received Message: '" + myServerMessage + "'");
+            switch (myServerMessage) {
+                case "1020": return "";//sign in succes
+                default: return "Sign In Failed";
+            }
         }
     }
 }
